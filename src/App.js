@@ -5,6 +5,7 @@ import Button from "./Button";
 function App() {
   const [secondRemaining, setSecondsRemaining] = useState(10);
   const [appState, setAppState] = useState("reset");
+  const [showStartStopButton, setShowStartStopButton] = useState(true);
 
   function startTimer() {
     setAppState((appState) => appState === "start" ? "stop" : "start");
@@ -13,6 +14,7 @@ function App() {
   function resetTimer() {
     setSecondsRemaining(10);
     setAppState("reset");
+    setShowStartStopButton(true);
   }
 
   useEffect(function () {
@@ -23,6 +25,7 @@ function App() {
         if (secondRemaining <= 1) {
           clearInterval(id);
           setAppState("reset");
+          setShowStartStopButton(false);
           return 0;
         }
         return secondRemaining - 1;
@@ -38,7 +41,9 @@ function App() {
     <div className="timer-container">
       <Time secondRemaining={secondRemaining} />
       <div className="interaction-buttons">
-        <Button onClick={startTimer}>Start/Stop</Button>
+        {
+          showStartStopButton && <Button onClick={startTimer}>Start/Stop</Button>
+        }
         <Button onClick={resetTimer}>Reset</Button>
       </div>
     </div>
